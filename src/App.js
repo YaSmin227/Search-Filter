@@ -1,23 +1,32 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from 'react';
+import MOCK_DATA from './MOCK_DATA.json'
 
 function App() {
+  // searchTerm
+  const [searchTerm, setSearchTerm] = useState('');
+  // set input value to searchTerm
+  const inputVal = (e) => {
+    setSearchTerm(e.target.value)
+  }
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <input type='text' placeholder='Search .....' onChange={inputVal} />
+      <div className='filter_container'>
+        {
+          MOCK_DATA.filter(data => {
+            if (searchTerm === '') {
+              return data
+            } else if (data.first_name.toLocaleLowerCase().includes(searchTerm.toLocaleLowerCase())) {
+              return data
+            }
+          })
+            .map(data => {
+              return (
+                <p key={data.id}>{data.first_name}</p>
+              )
+            })
+        }
+      </div>
     </div>
   );
 }
